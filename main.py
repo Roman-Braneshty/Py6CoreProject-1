@@ -1,6 +1,16 @@
-def print_hi(dev):
-    print(f'Hello {dev}!')
+from AdressBook import *
+from Notates import *
+
+
+
+
+
+
+
+
+def main():
+    pass
 
 
 if __name__ == '__main__':
-    print_hi('developers')
+    main()
