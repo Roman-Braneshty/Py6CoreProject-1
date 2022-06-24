@@ -10,20 +10,30 @@ from Notates import *
 
 def main():
     contacts = reading_db(file_name)
-    print('Выберите направление работы помощника: Notate - Введите(N) | AdressBook - Введите(A) ')
-    branch = input('>>> ')
-    if branch == 'A':
-        while True:
-            user_command = input('>>> ')
-            command, data = command_parser(user_command)
-            print(command(contacts, *data))
-            if command is exiting:
-                break
-    elif branch == 'N':
-        pass
+    while True:
+        branch = input('Выберите одну из предложеных команд: '
+              '\nNotate - Введите(N) | AdressBook - Введите(A)\n'
+              'Для завершения работы помощника ведите (X)\n>>>')
 
-    else:
-        print('Нет доступной работы,выберите работу заново')
+        if branch.upper() == 'A':
+            print(f'{"_"*40} \nРабота з Adress_book')
+            while True:
+                user_command = input('AdressBook >>> ')
+                command, data = command_parser(user_command)
+                print(command(contacts, *data))
+                if command is exiting:
+                    print(f'Возврат в предидущее меню. Завершена работа c Adress_book.\n{"_"*40} ')
+                    break
+        elif branch.upper() == 'N':
+            while True:
+                user_command = input('>>> ')
+                print(user_command)     # Коли будуть команди в Notates.py, цей код перепишеться
+                if user_command =='ex':
+                    break
+        elif branch.upper() == 'X':
+            break
+
+
 
 
 if __name__ == '__main__':
