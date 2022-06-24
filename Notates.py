@@ -1,0 +1,2 @@
+class Notate:
+    pass
