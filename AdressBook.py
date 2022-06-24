@@ -115,7 +115,7 @@ class Record:
         else:
             return 'Unknown birthday'
 
-    def add_mail(self, mail: Mail):
+    def add_email(self, mail: Mail):
         self.mails.append(mail)
 
 
@@ -188,10 +188,10 @@ def add_mail(contacts, *args):  # when you add name and mail it adds the contact
         if mail in contacts[name.value].mails:
             raise MailExists
         else:
-            contacts[name.value].add_mail(mail)
+            contacts[name.value].add_email(mail)
     else:
         contacts[name.value] = Record(name, [mail])
-        return f'Added {mail} to user {name}'
+    return f'Added {mail} to user {name}'
 
 
 @InputError
