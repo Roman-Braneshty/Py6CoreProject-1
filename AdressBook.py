@@ -17,6 +17,10 @@ class Name(Field):
     pass
 
 
+class MailExists(Exception):
+    pass
+
+
 class Phone(Field):
     def __init__(self, value) -> None:
         super().__init__(value)
@@ -52,21 +56,41 @@ class Birthday(Field):
                 raise ValueError("Incorrect data format, should be DD.MM.YYYY")
         self.__value = value
 
-class Mail:
-    pass
+
+class Mail(Field):
+    def __init__(self, value) -> None:
+        super().__init__(value)
+        self.__value = None
+        self.value = value
+
+    @property
+    def value(self) -> str:
+        return self.__value
+
+    @value.setter
+    def value(self, value: str) -> None:
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if re.match(regex, value):
+            self.__value = value
+        else:
+            raise ValueError("Email must contain latin letters, @ and domain after .\n" +
+                             "Example: 'email@.com'\n")
+
 
 class HomeAdress:
     pass
 
+
 class Record:
-    def __init__(self, name: Name, phones=[], birthday: Birthday = None) -> None:
+    def __init__(self, name: Name, mails=[], phones=[], birthday: Birthday = None) -> None:
         self.name = name
         self.phone_list = phones
         self.birthday = birthday
+        self.mails = mails
 
     def __str__(self) -> str:
         return f'User {self.name} - Phones: {", ".join([phone.value for phone in self.phone_list])}' \
-               f' - Birthday: {self.birthday} '
+               f' - Birthday: {self.birthday} - Email: {self.mail} '
 
     def add_phone(self, phone: Phone) -> None:
         self.phone_list.append(phone)
@@ -90,6 +114,9 @@ class Record:
             return count_days
         else:
             return 'Unknown birthday'
+
+    def add_mail(self, mail: Mail):
+        self.mails.append(mail)
 
 
 class AddressBook(UserDict):
@@ -128,6 +155,8 @@ class InputError:
             return 'Sorry,user not found, try again!'
         except ValueError:
             return 'Sorry,phone number not found,try again!'
+        except MailExists:
+            return "This e-mail already exists in the address book"
 
 
 def greeting(*args):
@@ -150,6 +179,19 @@ def add(contacts, *args):
         contacts[name.value] = Record(name, [phone], birthday)
         writing_db(contacts)
         return f'Add {name}: {phone}'
+
+
+def add_mail(contacts, *args):  # when you add name and mail it adds the contact to the address book
+    name = Name(args[0])
+    mail = Mail(args[1])
+    if name.value in contacts:
+        if mail in contacts[name.value].mails:
+            raise MailExists
+        else:
+            contacts[name.value].add_mail(mail)
+    else:
+        contacts[name.value] = Record(name, [mail])
+        return f'Added {mail} to user {name}'
 
 
 @InputError
@@ -242,7 +284,7 @@ def find(contacts, *args):
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
             show_all: ['show all'], exiting: ['good bye', 'close', 'exit'],
             del_phone: ['delete '], birthday: ['birthday '], show_birthday_30_days: ['soon birthday'],
-            find: ['find', 'check']}
+            find: ['find', 'check'], add_mail: ['email']}
 
 
 def new_func():
@@ -257,5 +299,7 @@ def command_parser(user_command: str) -> new_func():
                 return key, args
     else:
         return unknown_command, []
+
+
 
 
