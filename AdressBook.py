@@ -93,7 +93,7 @@ class Record:
 
     def __str__(self) -> str:
         return f'User {self.name} - Phones: {", ".join([phone.value for phone in self.phone_list])}' \
-               f' - Birthday: {self.birthday} - Email: {self.mail} '
+               f' - Birthday: {self.birthday} - Email: {", ".join([mail.value for mail in self.mails])}'
 
     def add_phone(self, phone: Phone) -> None:
         self.phone_list.append(phone)
@@ -287,10 +287,27 @@ def find(contacts, *args):
     return result
 
 
+def help_func(*args):
+    return """Commands format - Command meaning
+    "help" - returns a list of available commands with formatting
+    "hello" - returns a greeting
+    "exit", "good bye", "close" or "." - exits the program
+    "add" + name + phone - adds a phone to a contact
+    "change" + name + phone + new phone - changes a phone number to a new one
+    "phone" = finds a phone for name
+    "show all" - displays all contacts
+    "delete" - deletes a phone number
+    "birthday" - 
+    "soon birthday" - displays a birthday in the next x days
+    "find" or "check" - 
+    "email" + name + email- adds an email
+    """
+
+
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
             show_all: ['show all'], exiting: ['good bye', 'close', 'exit'],
             del_phone: ['delete '], birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
-            find: ['find', 'check'], add_mail: ['email']}
+            find: ['find', 'check'], add_mail: ['email'], help_func: ["help"]}
 
 
 def new_func():
