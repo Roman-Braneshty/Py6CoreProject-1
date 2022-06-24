@@ -21,6 +21,10 @@ class MailExists(Exception):
     pass
 
 
+class IncorrectEmailFormat(Exception):
+    pass
+
+
 class Phone(Field):
     def __init__(self, value) -> None:
         super().__init__(value)
@@ -73,8 +77,7 @@ class Mail(Field):
         if re.match(regex, value):
             self.__value = value
         else:
-            raise ValueError("Email must contain latin letters, @ and domain after .\n" +
-                             "Example: 'email@.com'\n")
+            raise IncorrectEmailFormat
 
 
 class HomeAdress:
@@ -157,6 +160,8 @@ class InputError:
             return 'Sorry,phone number not found,try again!'
         except MailExists:
             return "This e-mail already exists in the address book"
+        except IncorrectEmailFormat:
+            return "Email must contain latin letters, @ and domain after . (Example: 'email@.com)"
 
 
 def greeting(*args):
@@ -180,8 +185,8 @@ def add(contacts, *args):
         writing_db(contacts)
         return f'Add {name}: {phone}'
 
-
-def add_mail(contacts, *args):  # when you add name and mail it adds the contact to the address book
+@InputError
+def add_mail(contacts, *args):
     name = Name(args[0])
     mail = Mail(args[1])
     if name.value in contacts:
