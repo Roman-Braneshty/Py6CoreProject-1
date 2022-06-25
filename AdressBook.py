@@ -21,6 +21,10 @@ class MailExists(Exception):
     pass
 
 
+class AdressExists(Exception):
+    pass
+
+
 class IncorrectEmailFormat(Exception):
     pass
 
@@ -93,22 +97,33 @@ class Mail(Field):
             raise IncorrectEmailFormat
 
 
-class HomeAdress:
-    pass
+class Adress:
+    def __init__(self, str) -> None:
+        super().__init__(str)
+        self.__str = None
+        self.str = str
+
+    @property
+    def value(self) -> str:
+        return self.__value
+
+    @value.setter
+    def value(self, value: str) -> None:
+        self.__value = value
 
 
 class Record:
-    def __init__(self, name: Name, phones=[], mails=[], birthday: Birthday = None) -> None:
+    def __init__(self, name: Name, phones=[], mails=[], adress=[], birthday: Birthday = None) -> None:
         self.name = name
         self.phone_list = phones
         self.birthday = birthday
         self.mails = mails
+        self.adress = adress
 
     def __str__(self) -> str:
         return f'User {self.name} - Phones: {", ".join([phone.value for phone in self.phone_list])}' \
-               f' - Birthday: {self.birthday} - Email: {", ".join([mail.value for mail in self.mails])}'
-        #return f'User {self.name} - Phones: {self.phone_list}' \
-               #f' - Birthday: {self.birthday} - Email: {self.mails} '
+               f' - Birthday: {self.birthday} - Email: {", ".join([mail.value for mail in self.mails])}' \
+               f' - Adress: {", ".join([adres.value for adres in self.adress])}'
 
     def add_phone(self, phone: Phone) -> None:
         self.phone_list.append(phone)
@@ -135,6 +150,9 @@ class Record:
 
     def add_email(self, mail: Mail):
         self.mails.append(mail)
+
+    def add_adresses(self, adres: Adress):
+        self.adress.append(adres)
 
 
 class AddressBook(UserDict):
@@ -174,11 +192,14 @@ class InputError:
         except ValueError:
             return 'Sorry,phone number not found,try again!'
         except MailExists:
-            return "This e-mail already exists in the address book"
+            return "This e-mail already exists in the adress book"
+        except AdressExists:
+            return 'This adress already exists in the adress book'
         except IncorrectEmailFormat:
             return "Email must contain latin letters, @ and domain after . (Example: 'email@.com)"
         except PhoneNumberError:
             return "Phone number must be 12 digits, and start with 380"
+
 
 def greeting(*args):
     return 'Hello! Can I help you?'
@@ -201,6 +222,7 @@ def add(contacts, *args):
         writing_db(contacts)
         return f'Add {name}: {phone}'
 
+
 @InputError
 def add_mail(contacts, *args):
     name = Name(args[0])
@@ -214,6 +236,21 @@ def add_mail(contacts, *args):
         contacts[name.value] = Record(name, [], [mail], birthday)
     writing_db(contacts)
     return f'Added {mail} to user {name}'
+
+
+@InputError
+def add_adress(contacts, *args):
+    name = Name(args[0])
+    adres = Adress(args[1])
+    if name.value in contacts:
+        if adres.value in contacts[name.value].adress:
+            raise AdressExists
+        else:
+            contacts[name.value].add_adresses(adres)
+    else:
+        contacts[name.value] = Record(name, [], [adres], birthday)
+    writing_db(contacts)
+    return f'Added {adres} to user {name}'
 
 
 @InputError
@@ -263,8 +300,8 @@ def show_birthday_30_days(contacts, *args):
     return result
 
 
-def exiting(*args):
-    return 'Good bye!'
+def backing(*args):
+    return 'Good bye CommandBot!'
 
 
 def unknown_command(*args):
@@ -304,13 +341,13 @@ def find(contacts, *args):
 
 
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
-            show_all: ['show all'], exiting: ['good bye', 'close', 'exit'],
-            del_phone: ['delete '], birthday: ['birthday '], show_birthday_30_days: ['soon birthday'],
-            find: ['find', 'check'], add_mail: ['email']}
+            show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
+            birthday: ['birthday '], show_birthday_30_days: ['soon birthday'],
+            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress']}
 
 
 def new_func():
-    return (str, list)
+    return str, list
 
 
 def command_parser(user_command: str) -> new_func():
