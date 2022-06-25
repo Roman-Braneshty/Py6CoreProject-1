@@ -29,6 +29,10 @@ class IncorrectEmailFormat(Exception):
     pass
 
 
+class IncorrectAdressFormat(Exception):
+    pass
+
+
 class PhoneNumberError(Exception):
     pass
 
@@ -97,11 +101,11 @@ class Mail(Field):
             raise IncorrectEmailFormat
 
 
-class Adress:
-    def __init__(self, str) -> None:
-        super().__init__(str)
-        self.__str = None
-        self.str = str
+class Adress(Field):
+    def __init__(self, value) -> None:
+        super().__init__(value)
+        self.__value = None
+        self.value = value
 
     @property
     def value(self) -> str:
@@ -109,7 +113,11 @@ class Adress:
 
     @value.setter
     def value(self, value: str) -> None:
-        self.__value = value
+        regex = r'^([\w]([\.,]?)([\s]?)){1,60}$'
+        if re.match(regex, value):
+            self.__value = value
+        else:
+            raise IncorrectAdressFormat
 
 
 class Record:
@@ -197,6 +205,8 @@ class InputError:
             return 'This adress already exists in the adress book'
         except IncorrectEmailFormat:
             return "Email must contain latin letters, @ and domain after . (Example: 'email@.com)"
+        except IncorrectAdressFormat:
+            return 'Incorrect adress! May be (Example: Kyiv,Pr.Dnipro,12'
         except PhoneNumberError:
             return "Phone number must be 12 digits, and start with 380"
 
@@ -218,7 +228,7 @@ def add(contacts, *args):
         writing_db(contacts)
         return f'Add phone number: {phone} for {name}'
     else:
-        contacts[name.value] = Record(name, [phone], [], birthday)
+        contacts[name.value] = Record(name, [phone], [], [], birthday)
         writing_db(contacts)
         return f'Add {name}: {phone}'
 
@@ -233,7 +243,7 @@ def add_mail(contacts, *args):
         else:
             contacts[name.value].add_email(mail)
     else:
-        contacts[name.value] = Record(name, [], [mail], birthday)
+        contacts[name.value] = Record(name, [], [mail], [], birthday)
     writing_db(contacts)
     return f'Added {mail} to user {name}'
 
@@ -248,7 +258,7 @@ def add_adress(contacts, *args):
         else:
             contacts[name.value].add_adresses(adres)
     else:
-        contacts[name.value] = Record(name, [], [adres], birthday)
+        contacts[name.value] = Record(name, [], [], [adres], birthday)
     writing_db(contacts)
     return f'Added {adres} to user {name}'
 

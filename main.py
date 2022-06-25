@@ -21,7 +21,7 @@ def main():
                 user_command = input('AdressBook >>> ')
                 command, data = command_parser(user_command)
                 print(command(contacts, *data))
-                if command is exiting:
+                if command is backing:
                     print(f'Возврат в предидущее меню. Завершена работа c Adress_book.\n{"_"*40} ')
                     break
         elif branch.upper() == 'N':
