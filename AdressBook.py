@@ -175,7 +175,8 @@ class InputError:
             return "This e-mail already exists in the address book"
         except IncorrectEmailFormat:
             return "Email must contain latin letters, @ and domain after . (Example: 'email@.com)"
-
+        except PhoneNumberError:
+            return "Phone number must be 12 digits, and start with 380"
 
 def greeting(*args):
     return 'Hello! Can I help you?'
