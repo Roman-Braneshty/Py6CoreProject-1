@@ -302,10 +302,11 @@ def birthday(contacts, *args):
         return f'{contacts[name].birthday}'
 
 
-def show_birthday_30_days(contacts, *args):
-    result = 'List of users with birthday in 30 days:'
+def show_birthday_x_days(contacts, *args):
+    x = int(args[0])
+    result = f'List of users with birthday in {x} days:'
     for key in contacts:
-        if contacts[key].days_to_birthday() <= 30:
+        if contacts[key].days_to_birthday() <= x:
             result += f'\n{contacts[key]}'
     return result
 
@@ -352,7 +353,7 @@ def find(contacts, *args):
 
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
-            birthday: ['birthday '], show_birthday_30_days: ['soon birthday'],
+            birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
             find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress']}
 
 
