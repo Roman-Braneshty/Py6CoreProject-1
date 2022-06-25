@@ -85,7 +85,7 @@ class HomeAdress:
 
 
 class Record:
-    def __init__(self, name: Name, mails=[], phones=[], birthday: Birthday = None) -> None:
+    def __init__(self, name: Name, phones=[], mails=[], birthday: Birthday = None) -> None:
         self.name = name
         self.phone_list = phones
         self.birthday = birthday
@@ -93,7 +93,9 @@ class Record:
 
     def __str__(self) -> str:
         return f'User {self.name} - Phones: {", ".join([phone.value for phone in self.phone_list])}' \
-               f' - Birthday: {self.birthday} - Email: {self.mail} '
+               f' - Birthday: {self.birthday} - Email: {", ".join([mail.value for mail in self.mails])}'
+        #return f'User {self.name} - Phones: {self.phone_list}' \
+               #f' - Birthday: {self.birthday} - Email: {self.mails} '
 
     def add_phone(self, phone: Phone) -> None:
         self.phone_list.append(phone)
@@ -181,7 +183,7 @@ def add(contacts, *args):
         writing_db(contacts)
         return f'Add phone number: {phone} for {name}'
     else:
-        contacts[name.value] = Record(name, [phone], birthday)
+        contacts[name.value] = Record(name, [phone], [], birthday)
         writing_db(contacts)
         return f'Add {name}: {phone}'
 
@@ -190,12 +192,13 @@ def add_mail(contacts, *args):
     name = Name(args[0])
     mail = Mail(args[1])
     if name.value in contacts:
-        if mail in contacts[name.value].mails:
+        if mail.value in contacts[name.value].mails:
             raise MailExists
         else:
             contacts[name.value].add_email(mail)
     else:
-        contacts[name.value] = Record(name, [mail])
+        contacts[name.value] = Record(name, [], [mail], birthday)
+    writing_db(contacts)
     return f'Added {mail} to user {name}'
 
 
