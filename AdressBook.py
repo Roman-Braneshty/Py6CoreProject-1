@@ -24,6 +24,9 @@ class MailExists(Exception):
 class IncorrectEmailFormat(Exception):
     pass
 
+class PhoneNumberError(Exception):
+    pass
+
 
 class Phone(Field):
     def __init__(self, value) -> None:
@@ -37,9 +40,29 @@ class Phone(Field):
 
     @value.setter
     def value(self, value) -> None:
-        if value.isdigit():
-            self.__value = value
-
+        codes_operators = ["067", "068", "096", "097", "098", "050",
+                           "066", "095", "099", "063", "073", "093"]
+        new_value = (value.strip().
+                     removeprefix('+').
+                     replace("(", '').
+                     replace(")", '').
+                     replace("-", ''))
+        if new_value[:2] == '38' and len(new_value) == 12 and new_value[2:5] in codes_operators:
+            self.__value = new_value
+        else:
+            raise PhoneNumberError
+     # def value(self, value):
+     #        codes_operators = ["067", "068", "096", "097", "098",
+     #                           "050", "066", "095", "099", "063", "073", "093"]
+     #        new_value = (value.strip()
+     #                     .removeprefix('+')
+     #                     .replace("(", '')
+     #                     .replace(")", '')
+     #                     .replace("-", ''))
+     #        if new_value[:2] == '38' and len(new_value) == 12 and new_value[2:5] in codes_operators:
+     #            Field.value.fset(self, new_value)
+     #        else:
+     #            raise ValueError
 
 class Birthday(Field):
     def __init__(self, value) -> None:
@@ -162,6 +185,8 @@ class InputError:
             return "This e-mail already exists in the address book"
         except IncorrectEmailFormat:
             return "Email must contain latin letters, @ and domain after . (Example: 'email@.com)"
+        except PhoneNumberError:
+            return "Phone number must be 12 digits, and start with 380"
 
 
 def greeting(*args):
@@ -174,6 +199,7 @@ def add(contacts, *args):
     phone = Phone(args[1])
     try:
         birthday = Birthday(args[2])
+        writing_db(contacts)
     except IndexError:
         birthday = None
     if name.value in contacts:
@@ -194,8 +220,10 @@ def add_mail(contacts, *args):
             raise MailExists
         else:
             contacts[name.value].add_email(mail)
+
     else:
         contacts[name.value] = Record(name, [mail])
+
     return f'Added {mail} to user {name}'
 
 

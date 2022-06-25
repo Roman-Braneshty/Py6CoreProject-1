@@ -31,6 +31,7 @@ def main():
                 if user_command =='ex':
                     break
         elif branch.upper() == 'X':
+            #writing_db(contacts)
             break
 
 
