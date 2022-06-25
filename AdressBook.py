@@ -37,8 +37,17 @@ class Phone(Field):
 
     @value.setter
     def value(self, value) -> None:
-        if value.isdigit():
-            self.__value = value
+        codes_operators = ["067", "068", "096", "097", "098", "050",
+                           "066", "095", "099", "063", "073", "093"]
+        new_value = (value.strip().
+                     removeprefix('+').
+                     replace("(", '').
+                     replace(")", '').
+                     replace("-", ''))
+        if new_value[:2] == '38' and len(new_value) == 12 and new_value[2:5] in codes_operators:
+            self.__value = new_value
+        else:
+            raise PhoneNumberError
 
 
 class Birthday(Field):
