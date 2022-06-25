@@ -24,6 +24,8 @@ class MailExists(Exception):
 class IncorrectEmailFormat(Exception):
     pass
 
+class PhoneNumberError(Exception):
+    pass
 
 class Phone(Field):
     def __init__(self, value) -> None:
