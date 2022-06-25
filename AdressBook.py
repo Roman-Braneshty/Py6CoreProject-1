@@ -100,6 +100,9 @@ class Mail(Field):
         else:
             raise IncorrectEmailFormat
 
+    def get_email(self) -> str:
+        return self.value
+
 
 class Adress(Field):
     def __init__(self, value) -> None:
@@ -158,6 +161,22 @@ class Record:
 
     def add_email(self, mail: Mail):
         self.mails.append(mail)
+
+    def get_emails(self) -> str:
+        if not self.mails:
+            return 'No emails'
+        return ', '.join([mail.get_email() for mail in self.mails])
+
+    #def edit_email(self, mail: Mail, new_mail: Mail) -> None:
+        #self.mails.remove(mail)
+        #self.mails.append(new_mail)
+
+    def edit_email(self, mail: Mail, new_mail: Mail) -> str:
+        for el in self.mails:
+            if el.get_email() == mail.get_email():
+                self.mails.remove(el)
+                self.mails.append(new_mail)
+                return f"Email {mail} was changed to {new_mail}"
 
     def add_adresses(self, adres: Adress):
         self.adress.append(adres)
@@ -272,6 +291,16 @@ def change(contacts, *args):
 
 
 @InputError
+def change_email(contacts, *args):
+    name = args[0]
+    mail = args[1]
+    new_mail = args[2]
+    contacts[name].edit_email(Mail(mail), Mail(new_mail))
+    writing_db(contacts)
+    return f'Email {mail} changed to {new_mail} for {name}'
+
+
+@InputError
 def phone(contacts, *args):
     name = args[0]
     phone = contacts[name]
@@ -354,7 +383,7 @@ def find(contacts, *args):
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
-            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress']}
+            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'], change_email: ["new email"]}
 
 
 def new_func():
