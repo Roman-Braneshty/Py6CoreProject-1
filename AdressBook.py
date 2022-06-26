@@ -224,7 +224,7 @@ class InputError:
         try:
             return self.func(contacts, *args)
         except IndexError:
-            return 'Sorry,enter command,name,phone!'
+            return 'Input formatting is not correct, make sure to check -help-!'
         except KeyError:
             return 'Sorry,user not found, try again!'
         except ValueError:
@@ -344,6 +344,14 @@ def del_phone(contacts, *args):
     return f'for {name},phone:{phone} is delete'
 
 
+def del_contact(contacts, *args):
+    name = args[0]
+    del contacts[name]
+    writing_db(contacts)
+    return f'Deleted user {name}'
+
+
+
 def show_all(contacts, *args):
     if not contacts:
         return 'Address book is empty'
@@ -412,7 +420,9 @@ def find(contacts, *args):
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
-            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'], change_email: ["new email"], change_adres: ['new address', 'new adres']}
+            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
+            change_email: ["new email"], change_adres: ['new address', 'new adres'],
+            del_contact: ['remove contact']}
 
 
 def new_func():
