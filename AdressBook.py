@@ -384,6 +384,25 @@ def backing(*args):
 def unknown_command(*args):
     return 'Unknown command! Enter again!'
 
+def help(*args):
+    return """Commands format - Command meaning
+    "help" - returns a list of available commands with formatting
+    "hello" - returns a greeting
+    "add name phone (birthday)" - adds a phone to a contact, adds a birthday (optional)
+    "change name phone new phone" - changes a phone number to a new one
+    "phone" = finds a phone for name
+    "show all" - displays all contacts
+    "delete name phone" - deletes a phone number for name
+    "birthday name" - finds a birthday for name
+    "soon birthday {days}" - gives a list of users who have birthday within the next {days}, where days = number of your choosing
+    "find" + any strings - finds matches in the address book and returns the findings
+    "email name email" - adds an email for a user
+    "new email old email new email" - changes old email to new email
+    "new adres old address new address" - changes old address to the new address
+    "adress name address" - adds and address for a user, address format city,street,number
+    "remove contact name" - deletes the user and all his data from the contact book
+    """
+
 
 file_name = 'AddressBook.bin'
 
@@ -422,7 +441,7 @@ COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['ph
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
             find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
             change_email: ["new email"], change_adres: ['new address', 'new adres'],
-            del_contact: ['remove contact']}
+            del_contact: ['remove contact'], help: ['help']}
 
 
 def new_func():
