@@ -22,7 +22,7 @@ def main():
                 command, data = command_parser(user_command)
                 print(command(contacts, *data))
                 if command is backing:
-                    print(f'Возврат в предидущее меню. Завершена работа c Adress_book.\n{"_"*40} ')
+                    print(f'Возврат в предыдущее меню. Завершена работа c Adress_book.\n{"_"*40} ')
                     break
         elif branch.upper() == 'N':
             while True:

@@ -167,10 +167,6 @@ class Record:
             return 'No emails'
         return ', '.join([mail.get_email() for mail in self.mails])
 
-    #def edit_email(self, mail: Mail, new_mail: Mail) -> None:
-        #self.mails.remove(mail)
-        #self.mails.append(new_mail)
-
     def edit_email(self, mail: Mail, new_mail: Mail) -> str:
         for el in self.mails:
             if el.get_email() == mail.get_email():
@@ -256,6 +252,10 @@ def add(contacts, *args):
 def add_mail(contacts, *args):
     name = Name(args[0])
     mail = Mail(args[1])
+    try:
+        birthday = Birthday(args[2])
+    except IndexError:
+        birthday = None
     if name.value in contacts:
         if mail.value in contacts[name.value].mails:
             raise MailExists
@@ -271,6 +271,10 @@ def add_mail(contacts, *args):
 def add_adress(contacts, *args):
     name = Name(args[0])
     adres = Adress(args[1])
+    try:
+        birthday = Birthday(args[2])
+    except IndexError:
+        birthday = None
     if name.value in contacts:
         if adres.value in contacts[name.value].adress:
             raise AdressExists
