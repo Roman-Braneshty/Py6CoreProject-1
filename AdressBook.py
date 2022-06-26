@@ -122,6 +122,9 @@ class Adress(Field):
         else:
             raise IncorrectAdressFormat
 
+    def get_adres(self) -> str:
+        return self.value
+
 
 class Record:
     def __init__(self, name: Name, phones=[], mails=[], adress=[], birthday: Birthday = None) -> None:
@@ -177,6 +180,18 @@ class Record:
     def add_adresses(self, adres: Adress):
         self.adress.append(adres)
 
+    def get_adress(self) -> str:
+        if not self.adress:
+            return 'No adress'
+        return ', '.join([adres.get_adres() for adres in self.adress])
+
+    def edit_adres(self, adres: Adress, new_adres: Adress) -> str:
+        for el in self.adress:
+            if el.get_adres() == adres.get_adres():
+                self.adress.remove(el)
+                self.adress.append(new_adres)
+                return f"Address {adres} was changed to {new_adres}"
+
 
 class AddressBook(UserDict):
     def __init__(self):
@@ -209,7 +224,7 @@ class InputError:
         try:
             return self.func(contacts, *args)
         except IndexError:
-            return 'Sorry,enter command,name,phone!'
+            return 'Input formatting is not correct, make sure to check -help-!'
         except KeyError:
             return 'Sorry,user not found, try again!'
         except ValueError:
@@ -305,6 +320,16 @@ def change_email(contacts, *args):
 
 
 @InputError
+def change_adres(contacts, *args):
+    name = args[0]
+    adres = args[1]
+    new_adres = args[2]
+    contacts[name].edit_adres(Adress(adres), Adress(new_adres))
+    writing_db(contacts)
+    return f'Address {adres} changed to {new_adres} for {name}'
+
+
+@InputError
 def phone(contacts, *args):
     name = args[0]
     phone = contacts[name]
@@ -317,6 +342,14 @@ def del_phone(contacts, *args):
     contacts[name].del_phone(Phone(phone))
     writing_db(contacts)
     return f'for {name},phone:{phone} is delete'
+
+
+def del_contact(contacts, *args):
+    name = args[0]
+    del contacts[name]
+    writing_db(contacts)
+    return f'Deleted user {name}'
+
 
 
 def show_all(contacts, *args):
@@ -350,6 +383,25 @@ def backing(*args):
 
 def unknown_command(*args):
     return 'Unknown command! Enter again!'
+
+def help(*args):
+    return """Commands format - Command meaning
+    Command: "help" - returns a list of available commands with formatting
+    Command: "hello" - returns a greeting
+    Command: "add" Enter: name phone (birthday) - adds a phone to a contact, adds a birthday (optional)
+    Command: "change" Enter: name phone new phone - changes a phone number to a new one
+    Command: "phone" = finds a phone for name
+    Command: "show all" - displays all contacts
+    Command: "delete" Enter: name phone - deletes a phone number for name
+    Command: "birthday" Enter: name - finds a birthday for name
+    Command: "soon birthday" Enter: {days} - gives a list of users who have birthday within the next {days}, where days = number of your choosing
+    Command: "find" Enter: [any strings} - finds matches in the address book and returns the findings
+    Command: "email" Enter: name email - adds an email for a user
+    Command: "new email" Enter: name old email new email - changes old email to new email
+    Command: "new adres" Enter: name old address new address - changes old address to the new address
+    Command: "adress" Enter: name address - adds and address for a user, address format city,street,number
+    Command: "remove contact" Enter: name - deletes the user and all his data from the contact book
+    """
 
 
 file_name = 'AddressBook.bin'
@@ -387,7 +439,9 @@ def find(contacts, *args):
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
-            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'], change_email: ["new email"]}
+            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
+            change_email: ["new email"], change_adres: ['new address', 'new adres'],
+            del_contact: ['remove contact'], help: ['help']}
 
 
 def new_func():
