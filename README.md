@@ -7,3 +7,6 @@ Roles:
 1) Team Lead - Роман Бранешты
 2) Scrum Master - Екатерина Климентенко
 3) Spirit Guide - Александр Романюк
+
+Technical description of the bot:
+
