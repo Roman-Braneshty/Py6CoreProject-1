@@ -386,21 +386,21 @@ def unknown_command(*args):
 
 def help(*args):
     return """Commands format - Command meaning
-    "help" - returns a list of available commands with formatting
-    "hello" - returns a greeting
-    "add name phone (birthday)" - adds a phone to a contact, adds a birthday (optional)
-    "change name phone new phone" - changes a phone number to a new one
-    "phone" = finds a phone for name
-    "show all" - displays all contacts
-    "delete name phone" - deletes a phone number for name
-    "birthday name" - finds a birthday for name
-    "soon birthday {days}" - gives a list of users who have birthday within the next {days}, where days = number of your choosing
-    "find" + any strings - finds matches in the address book and returns the findings
-    "email name email" - adds an email for a user
-    "new email old email new email" - changes old email to new email
-    "new adres old address new address" - changes old address to the new address
-    "adress name address" - adds and address for a user, address format city,street,number
-    "remove contact name" - deletes the user and all his data from the contact book
+    Command: "help" - returns a list of available commands with formatting
+    Command: "hello" - returns a greeting
+    Command: "add" Enter: name phone (birthday) - adds a phone to a contact, adds a birthday (optional)
+    Command: "change" Enter: name phone new phone - changes a phone number to a new one
+    Command: "phone" = finds a phone for name
+    Command: "show all" - displays all contacts
+    Command: "delete" Enter: name phone - deletes a phone number for name
+    Command: "birthday" Enter: name - finds a birthday for name
+    Command: "soon birthday" Enter: {days} - gives a list of users who have birthday within the next {days}, where days = number of your choosing
+    Command: "find" Enter: [any strings} - finds matches in the address book and returns the findings
+    Command: "email" Enter: name email - adds an email for a user
+    Command: "new email" Enter: name old email new email - changes old email to new email
+    Command: "new adres" Enter: name old address new address - changes old address to the new address
+    Command: "adress" Enter: name address - adds and address for a user, address format city,street,number
+    Command: "remove contact" Enter: name - deletes the user and all his data from the contact book
     """
 
 
