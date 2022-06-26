@@ -1,5 +1,8 @@
 # Py6CoreProject №1
-
+![command bot](https://img.shields.io/pypi/pyversions/pyth?color=orange&label=Command%20Bot&logo=R)
+![lic](https://img.shields.io/github/license/Roman-Braneshty/Py6CoreProject-1?color=orange&logo=R)
+![bot work](https://img.shields.io/github/commit-activity/m/Roman-Braneshty/Py6CoreProject-1?color=orange&label=Bot%20Work&logo=R)
+![start project](https://img.shields.io/date/1655672400?color=orange&label=start%20project)
 ## Group№1
 
 ### Roles:
@@ -46,3 +49,6 @@ ___
 | new adres      | name old address new address |                                                               changes old address to the new address |                                            
 | adress         |         name address         |                                           adds address for a user, address format city,street,number |                                       
 | remove contact |             name             |                                              deletes the user and all his data from the contact book |                                              
+
+## License: 
+The module is available as open source under the terms of the [Python Groupe License, Version 2.0 ](http://www.apache.org/licenses/)
