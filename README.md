@@ -35,7 +35,7 @@ ___
 | help           |             help             |                                                                              returns a list commands |
 | hello          |            hello             |                                                                                   returns a greeting |
 | add            |    name phone (birthday)     |                                                adds a phone to a contact, adds a birthday (optional) |
-| change"        |     name phone new phone     |                                                                  changes a phone number to a new one |
+| change         |     name phone new phone     |                                                                  changes a phone number to a new one |
 | show all       |           show all           |                                                                                displays all contacts |
 | delete         |          name phone          |                                                                      deletes a phone number for name |                                                                       
 | birthday       |             name             |                                                                            finds a birthday for name |                                                                                 
