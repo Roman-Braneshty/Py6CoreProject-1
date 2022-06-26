@@ -100,6 +100,9 @@ class Mail(Field):
         else:
             raise IncorrectEmailFormat
 
+    def get_email(self) -> str:
+        return self.value
+
 
 class Adress(Field):
     def __init__(self, value) -> None:
@@ -158,6 +161,18 @@ class Record:
 
     def add_email(self, mail: Mail):
         self.mails.append(mail)
+
+    def get_emails(self) -> str:
+        if not self.mails:
+            return 'No emails'
+        return ', '.join([mail.get_email() for mail in self.mails])
+
+    def edit_email(self, mail: Mail, new_mail: Mail) -> str:
+        for el in self.mails:
+            if el.get_email() == mail.get_email():
+                self.mails.remove(el)
+                self.mails.append(new_mail)
+                return f"Email {mail} was changed to {new_mail}"
 
     def add_adresses(self, adres: Adress):
         self.adress.append(adres)
@@ -237,6 +252,10 @@ def add(contacts, *args):
 def add_mail(contacts, *args):
     name = Name(args[0])
     mail = Mail(args[1])
+    try:
+        birthday = Birthday(args[2])
+    except IndexError:
+        birthday = None
     if name.value in contacts:
         if mail.value in contacts[name.value].mails:
             raise MailExists
@@ -252,6 +271,10 @@ def add_mail(contacts, *args):
 def add_adress(contacts, *args):
     name = Name(args[0])
     adres = Adress(args[1])
+    try:
+        birthday = Birthday(args[2])
+    except IndexError:
+        birthday = None
     if name.value in contacts:
         if adres.value in contacts[name.value].adress:
             raise AdressExists
@@ -269,6 +292,16 @@ def change(contacts, *args):
     contacts[name].edit_phone(Phone(old_phone), Phone(new_phone))
     writing_db(contacts)
     return f'{name} your old phone number: {old_phone} was changed to {new_phone}'
+
+
+@InputError
+def change_email(contacts, *args):
+    name = args[0]
+    mail = args[1]
+    new_mail = args[2]
+    contacts[name].edit_email(Mail(mail), Mail(new_mail))
+    writing_db(contacts)
+    return f'Email {mail} changed to {new_mail} for {name}'
 
 
 @InputError
@@ -302,10 +335,11 @@ def birthday(contacts, *args):
         return f'{contacts[name].birthday}'
 
 
-def show_birthday_30_days(contacts, *args):
-    result = 'List of users with birthday in 30 days:'
+def show_birthday_x_days(contacts, *args):
+    x = int(args[0])
+    result = f'List of users with birthday in {x} days:'
     for key in contacts:
-        if contacts[key].days_to_birthday() <= 30:
+        if contacts[key].days_to_birthday() <= x:
             result += f'\n{contacts[key]}'
     return result
 
@@ -352,8 +386,8 @@ def find(contacts, *args):
 
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
-            birthday: ['birthday '], show_birthday_30_days: ['soon birthday'],
-            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress']}
+            birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
+            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'], change_email: ["new email"]}
 
 
 def new_func():
