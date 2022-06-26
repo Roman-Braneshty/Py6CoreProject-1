@@ -329,11 +329,11 @@ def change_adres(contacts, *args):
     return f'Address {adres} changed to {new_adres} for {name}'
 
 
-@InputError
-def search_data(contacts, *args):
-    name = args[0]
-    output = contacts[name]
-    return f'{output}'
+#@InputError
+#def search_data(contacts, *args):
+ #   name = args[0]
+  #  output = contacts[name]
+   # return f'{output}'
 
 
 @InputError
@@ -390,7 +390,6 @@ def help(*args):
     Command: "hello" - returns a greeting
     Command: "add" Enter: name phone (birthday) - adds a phone to a contact, adds a birthday (optional)
     Command: "change" Enter: name phone new phone - changes a phone number to a new one
-    Command: "search" Enter: name = finds data for user
     Command: "show all" - displays all contacts
     Command: "delete" Enter: name phone - deletes a phone number for name
     Command: "birthday" Enter: name - finds a birthday for name
@@ -421,26 +420,29 @@ def writing_db(contacts):
         pickle.dump(contacts, fh)
 
 
+
 @InputError
 def find(contacts, *args):
-    args_str = ''
-    for i in args:
-        args_str += i + ' '
-    user_request = '[' + args_str.lower()[:-1] + ']{2,}'
-    reg_exp = fr'{user_request}'
-    result = f'List with matches:\n'
-    for value in contacts.values():
-        match = re.findall(reg_exp, str(value).lower())
-        if str(value).find(str(match)) and len(match):
-            result += f'{str(value)}'+'\n'
-    return result
+    substring = args[0]
+    if contacts:
+        # [phone.value for phone in self.phones]
+        for name, data in contacts.items():
+            if substring.lower() in name.lower():
+                return f'{data}'
+            for phone in data.phone_list:
+                if substring in str(phone):
+                    return f"The phone is {phone} and belongs to {name}"
+            for mail in data.mails:
+                if substring in str(mail):
+                    return f"The email is {mail} and belongs to {name}"
+            for adres in data.adress:
+                if substring in str(adres):
+                    return f"The address is {adres} and belongs to {name}"
+    else:
+        return "Address Book is empty"
 
-# def phone change to def find
-#def find delete
-#change output for def phone
 
-
-COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], search_data: ['search'],
+COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
             find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
