@@ -330,10 +330,10 @@ def change_adres(contacts, *args):
 
 
 @InputError
-def phone(contacts, *args):
+def search_data(contacts, *args):
     name = args[0]
-    phone = contacts[name]
-    return f'{phone}'
+    output = contacts[name]
+    return f'{output}'
 
 
 @InputError
@@ -390,7 +390,7 @@ def help(*args):
     Command: "hello" - returns a greeting
     Command: "add" Enter: name phone (birthday) - adds a phone to a contact, adds a birthday (optional)
     Command: "change" Enter: name phone new phone - changes a phone number to a new one
-    Command: "phone" = finds a phone for name
+    Command: "search" Enter: name = finds data for user
     Command: "show all" - displays all contacts
     Command: "delete" Enter: name phone - deletes a phone number for name
     Command: "birthday" Enter: name - finds a birthday for name
@@ -400,7 +400,7 @@ def help(*args):
     Command: "new email" Enter: name old email new email - changes old email to new email
     Command: "new adres" Enter: name old address new address - changes old address to the new address
     Command: "adress" Enter: name address - adds and address for a user, address format city,street,number
-    Command: "remove contact" Enter: name - deletes the user and all his data from the contact book
+    Command: "remove contact" Enter:  name - deletes the user and all his data from the contact book
     """
 
 
@@ -435,8 +435,12 @@ def find(contacts, *args):
             result += f'{str(value)}'+'\n'
     return result
 
+# def phone change to def find
+#def find delete
+#change output for def phone
 
-COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
+
+COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], search_data: ['search'],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
             find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
