@@ -122,6 +122,9 @@ class Adress(Field):
         else:
             raise IncorrectAdressFormat
 
+    def get_adres(self) -> str:
+        return self.value
+
 
 class Record:
     def __init__(self, name: Name, phones=[], mails=[], adress=[], birthday: Birthday = None) -> None:
@@ -176,6 +179,18 @@ class Record:
 
     def add_adresses(self, adres: Adress):
         self.adress.append(adres)
+
+    def get_adress(self) -> str:
+        if not self.adress:
+            return 'No adress'
+        return ', '.join([adres.get_adres() for adres in self.adress])
+
+    def edit_adres(self, adres: Adress, new_adres: Adress) -> str:
+        for el in self.adress:
+            if el.get_adres() == adres.get_adres():
+                self.adress.remove(el)
+                self.adress.append(new_adres)
+                return f"Address {adres} was changed to {new_adres}"
 
 
 class AddressBook(UserDict):
@@ -305,6 +320,16 @@ def change_email(contacts, *args):
 
 
 @InputError
+def change_adres(contacts, *args):
+    name = args[0]
+    adres = args[1]
+    new_adres = args[2]
+    contacts[name].edit_adres(Adress(adres), Adress(new_adres))
+    writing_db(contacts)
+    return f'Address {adres} changed to {new_adres} for {name}'
+
+
+@InputError
 def phone(contacts, *args):
     name = args[0]
     phone = contacts[name]
@@ -387,7 +412,7 @@ def find(contacts, *args):
 COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
-            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'], change_email: ["new email"]}
+            find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'], change_email: ["new email"], change_adres: ['new address', 'new adres']}
 
 
 def new_func():
