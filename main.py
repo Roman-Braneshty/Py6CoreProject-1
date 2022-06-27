@@ -3,13 +3,7 @@ from Notates import *
 
 
 
-
-
-
-
-
 def main():
-    contacts = reading_db(file_name)
     while True:
         branch = input('Выберите одну из предложеных команд: '
               '\nNotate - Введите(N) | AdressBook - Введите(A)\n'
@@ -17,18 +11,23 @@ def main():
 
         if branch.upper() == 'A':
             print(f'{"_"*40} \nРабота з Adress_book')
+            contacts = reading_db(file_name)
             while True:
                 user_command = input('AdressBook >>> ')
                 command, data = command_parser(user_command)
                 print(command(contacts, *data))
-                if command is backing:
+                if command is exiting:
                     print(f'Возврат в предыдущее меню. Завершена работа c Adress_book.\n{"_"*40} ')
                     break
         elif branch.upper() == 'N':
+            print(f'{"_" * 40} \nРабота з Notates')
+            notates_list = reading_db(file_name)
             while True:
-                user_command = input('>>> ')
-                print(user_command)     # Коли будуть команди в Notates.py, цей код перепишеться
-                if user_command =='ex':
+                user_command_not = input('>>> ')
+                command_not, data = command_parser_not(user_command_not)
+                print(command_not(notates_list, *data))
+                if command_not is backing:
+                    print(f'Возврат в предыдущее меню. Завершена работа c Notates.\n{"_" * 40} ')
                     break
         elif branch.upper() == 'X':
             break
