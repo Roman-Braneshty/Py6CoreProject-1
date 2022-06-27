@@ -49,18 +49,23 @@ ___
 | new email      |   name, old email, new email   |                                             Меняет старую почту на новую |                                                        
 | new adres      | name, old address, new address |                                             Меняет старый адрес на новый |                                            
 | adress         |         name, address          |          Добавляет адрес для контакта, формат адреса: city,street,number |                                       
-| remove contact |              name              |                    Удаляет контакта и все его данные из контактной книги |                                              
+| remove contact |              name              |                    Удаляет контакта и все его данные из контактной книги |  
+ | back           |              back              |                                          Возвращает в выбор веток работы |
 #### Notates commands:
-| Commands       |            Enter             |                                                              Description |
-|----------------|:----------------------------:|-------------------------------------------------------------------------:|
-| help           |             help             |                                                    Выводит список команд |
-| hello          |            hello             |                                                    Приветствуется с вами |
-| add            |    name phone (birthday)     |     создаёт контакта с Телефоном и датой рождения(может быть не введена) |
-| change         |     name phone new phone     |                                           Меняет старый телефон на новый |
-| show all       |           show all           |                                                  Показывает все контакты |
-| delete         |          name phone          |                                          Удаляет номер телефона контакта |                                                                       
-| birthday       |             name             |                                           Выводит дату рождения контакта |                                                                                 
-| soon birthday  |     days before birthday     | Показывает контактов, у кого день рождение в течении заданных параметров |
-| find           |             name             |                                           Находит определённых контактов |
+| Commands    |          Enter          |                                                               Description |
+|-------------|:-----------------------:|--------------------------------------------------------------------------:|
+| help        |          help           |                                                     Выводит список команд |
+| hello       |          hello          |                                                     Приветствуется с вами |
+| add         |          note           |                                         Добавляет заметки в Книгу Заметок |
+| tag         | number of note and tags | Добавляет ~~теги~~ ключевые слова для заметок в формате 'tag1, tag2, ...' |
+| del         | the number of the note  |                                     Удаляет заметку по порядковому номеру |
+| del tag     | the number of the note  |                       Удаляет ~~тег~~ ключевое слово определённой заметки |
+| change      | the number of the note  |                                             Изменяет определённую заметку |
+| find notate |   text of the notate    |                                    Находит заметку по тексту и выводит её |
+| find tag    |  tag(s) of the notate   |                  Находит заметку по ~~тегу~~ ключевому слову и выводит её |
+| show        |          show           |                                                     Выводит Книгу Заметок |
+| clear       |          clear          |                                                     Очищает книгу заметок |
+| back        |          back           |                                           Возвращает в выбор веток работы |
+
 ## License: 
 The module is available as open source under the terms of the [Python6Core Group№1 License, Apache, Version 2.0 ](http://www.apache.org/licenses/)
