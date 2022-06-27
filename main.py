@@ -26,7 +26,7 @@ def main():
                 user_command_not = input('>>> ')
                 command_not, data = command_parser_not(user_command_not)
                 print(command_not(notates_list, *data))
-                if command_not is backing:
+                if command_not is backing_notates:
                     print(f'Возврат в предыдущее меню. Завершена работа c Notates.\n{"_" * 40} ')
                     break
         elif branch.upper() == 'X':
