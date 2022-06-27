@@ -61,6 +61,9 @@ class Phone(Field):
         else:
             raise PhoneNumberError
 
+    def get_phone(self) -> str:
+        return self.value
+
 
 class Birthday(Field):
     def __init__(self, value) -> None:
@@ -145,9 +148,17 @@ class Record:
     def del_phone(self, phone: Phone) -> None:
         self.phone_list.remove(phone)
 
+    def get_phones(self) -> str:
+        if not self.phone_list:
+            return 'No phones'
+        return ', '.join([phone.get_phone() for phone in self.phone_list])
+
     def edit_phone(self, phone: Phone, new_phone: Phone) -> None:
-        self.phone_list.remove(phone)
-        self.phone_list.append(new_phone)
+        for el in self.phone_list:
+            if el.get_phone() == phone.get_phone():
+                self.phone_list.remove(el)
+                self.phone_list.append(new_phone)
+                return f"Email {phone} was changed to {new_phone}"
 
     def days_to_birthday(self):
         if self.birthday:
@@ -228,7 +239,7 @@ class InputError:
         except KeyError:
             return 'Sorry,user not found, try again!'
         except ValueError:
-            return 'Sorry,phone number not found,try again!'
+            return 'Sorry,incorrect argument,try again!'
         except MailExists:
             return "This e-mail already exists in the adress book"
         except AdressExists:
@@ -302,11 +313,11 @@ def add_adress(contacts, *args):
 
 
 @InputError
-def change(contacts, *args):
-    name, old_phone, new_phone = args[0], args[1], args[2]
-    contacts[name].edit_phone(Phone(old_phone), Phone(new_phone))
+def change_phone(contacts, *args):
+    name, phone, new_phone = args[0], args[1], args[2]
+    contacts[name].edit_phone(Phone(phone), Phone(new_phone))
     writing_db(contacts)
-    return f'{name} your old phone number: {old_phone} was changed to {new_phone}'
+    return f'{name} your old phone number: {phone} was changed to {new_phone}'
 
 
 @InputError
@@ -389,7 +400,7 @@ def help(*args):
     Command: "help" - returns a list of available commands with formatting
     Command: "hello" - returns a greeting
     Command: "add" Enter: name phone (birthday) - adds a phone to a contact, adds a birthday (optional)
-    Command: "change" Enter: name phone new phone - changes a phone number to a new one
+    Command: "new phone" Enter: name phone new phone - changes a phone number to a new one
     Command: "show all" - displays all contacts
     Command: "delete" Enter: name phone - deletes a phone number for name
     Command: "birthday" Enter: name - finds a birthday for name
@@ -442,7 +453,7 @@ def find(contacts, *args):
         return "Address Book is empty"
 
 
-COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '],
+COMMANDS = {greeting: ['hello'], add: ['add '], change_phone: ['new phone'],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
             find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
