@@ -61,6 +61,9 @@ class Phone(Field):
         else:
             raise PhoneNumberError
 
+    def get_phone(self) -> str:
+        return self.value
+
 
 class Birthday(Field):
     def __init__(self, value) -> None:
@@ -145,9 +148,17 @@ class Record:
     def del_phone(self, phone: Phone) -> None:
         self.phone_list.remove(phone)
 
+    def get_phones(self) -> str:
+        if not self.phone_list:
+            return 'No phones'
+        return ', '.join([phone.get_phone() for phone in self.phone_list])
+
     def edit_phone(self, phone: Phone, new_phone: Phone) -> None:
-        self.phone_list.remove(phone)
-        self.phone_list.append(new_phone)
+        for el in self.phone_list:
+            if el.get_phone() == phone.get_phone():
+                self.phone_list.remove(el)
+                self.phone_list.append(new_phone)
+                return f"Email {phone} was changed to {new_phone}"
 
     def days_to_birthday(self):
         if self.birthday:
@@ -228,7 +239,7 @@ class InputError:
         except KeyError:
             return 'Sorry,user not found, try again!'
         except ValueError:
-            return 'Sorry,phone number not found,try again!'
+            return 'Sorry,incorrect argument,try again!'
         except MailExists:
             return "This e-mail already exists in the adress book"
         except AdressExists:
@@ -302,11 +313,11 @@ def add_adress(contacts, *args):
 
 
 @InputError
-def change(contacts, *args):
-    name, old_phone, new_phone = args[0], args[1], args[2]
-    contacts[name].edit_phone(Phone(old_phone), Phone(new_phone))
+def change_phone(contacts, *args):
+    name, phone, new_phone = args[0], args[1], args[2]
+    contacts[name].edit_phone(Phone(phone), Phone(new_phone))
     writing_db(contacts)
-    return f'{name} your old phone number: {old_phone} was changed to {new_phone}'
+    return f'{name} your old phone number: {phone} was changed to {new_phone}'
 
 
 @InputError
@@ -329,11 +340,11 @@ def change_adres(contacts, *args):
     return f'Address {adres} changed to {new_adres} for {name}'
 
 
-@InputError
-def phone(contacts, *args):
-    name = args[0]
-    phone = contacts[name]
-    return f'{phone}'
+#@InputError
+#def search_data(contacts, *args):
+ #   name = args[0]
+  #  output = contacts[name]
+   # return f'{output}'
 
 
 @InputError
@@ -389,8 +400,7 @@ def help(*args):
     Command: "help" - returns a list of available commands with formatting
     Command: "hello" - returns a greeting
     Command: "add" Enter: name phone (birthday) - adds a phone to a contact, adds a birthday (optional)
-    Command: "change" Enter: name phone new phone - changes a phone number to a new one
-    Command: "phone" = finds a phone for name
+    Command: "new phone" Enter: name phone new phone - changes a phone number to a new one
     Command: "show all" - displays all contacts
     Command: "delete" Enter: name phone - deletes a phone number for name
     Command: "birthday" Enter: name - finds a birthday for name
@@ -400,7 +410,7 @@ def help(*args):
     Command: "new email" Enter: name old email new email - changes old email to new email
     Command: "new adres" Enter: name old address new address - changes old address to the new address
     Command: "adress" Enter: name address - adds and address for a user, address format city,street,number
-    Command: "remove contact" Enter: name - deletes the user and all his data from the contact book
+    Command: "remove contact" Enter:  name - deletes the user and all his data from the contact book
     """
 
 
@@ -421,22 +431,29 @@ def writing_db(contacts):
         pickle.dump(contacts, fh)
 
 
+
 @InputError
 def find(contacts, *args):
-    args_str = ''
-    for i in args:
-        args_str += i + ' '
-    user_request = '[' + args_str.lower()[:-1] + ']{2,}'
-    reg_exp = fr'{user_request}'
-    result = f'List with matches:\n'
-    for value in contacts.values():
-        match = re.findall(reg_exp, str(value).lower())
-        if str(value).find(str(match)) and len(match):
-            result += f'{str(value)}'+'\n'
-    return result
+    substring = args[0]
+    if contacts:
+        # [phone.value for phone in self.phones]
+        for name, data in contacts.items():
+            if substring.lower() in name.lower():
+                return f'{data}'
+            for phone in data.phone_list:
+                if substring in str(phone):
+                    return f"The phone is {phone} and belongs to {name}"
+            for mail in data.mails:
+                if substring in str(mail):
+                    return f"The email is {mail} and belongs to {name}"
+            for adres in data.adress:
+                if substring in str(adres):
+                    return f"The address is {adres} and belongs to {name}"
+    else:
+        return "Address Book is empty"
 
 
-COMMANDS = {greeting: ['hello'], add: ['add '], change: ['change '], phone: ['phone '],
+COMMANDS = {greeting: ['hello'], add: ['add '], change_phone: ['new phone'],
             show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
             find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
