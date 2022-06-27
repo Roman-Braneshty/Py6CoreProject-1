@@ -194,11 +194,11 @@ def help(*args):
 
 
 
-file_name = 'Notatebook.bin'
+file_name_notates = 'Notatebook.bin'
 
 
-def reading_db(file_name):
-    with open(file_name, "rb") as fh:
+def reading_db_notate(file_name_notates):
+    with open(file_name_notates, "rb") as fh:
         try:
             unpacked = pickle.load(fh)
         except EOFError:
@@ -207,7 +207,7 @@ def reading_db(file_name):
 
 
 def writing_db(notates_list):
-    with open(file_name, "wb") as fh:
+    with open(file_name_notates, "wb") as fh:
         pickle.dump(notates_list, fh)
 
 

@@ -21,7 +21,7 @@ def main():
                     break
         elif branch.upper() == 'N':
             print(f'{"_" * 40} \nРабота з Notates')
-            notates_list = reading_db(file_name)
+            notates_list = reading_db_notate(file_name_notates)
             while True:
                 user_command_not = input('>>> ')
                 command_not, data = command_parser_not(user_command_not)
