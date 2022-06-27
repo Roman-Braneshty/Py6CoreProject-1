@@ -351,7 +351,6 @@ def del_contact(contacts, *args):
     return f'Deleted user {name}'
 
 
-
 def show_all(contacts, *args):
     if not contacts:
         return 'Address book is empty'
@@ -383,6 +382,7 @@ def backing(*args):
 
 def unknown_command(*args):
     return 'Unknown command! Enter again!'
+
 
 def help(*args):
     return """Commands format - Command meaning

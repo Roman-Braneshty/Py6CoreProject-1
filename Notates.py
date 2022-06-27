@@ -32,7 +32,7 @@ class NotateBook(UserList):
             print(f"{count}. {i}\n")
         return f'End of notates'
 
-    def find_notate(self, symbol) -> int:
+    def find_notate(self, symbol) -> str:
         count = 0
         ind = 0
         for record in self.data:
@@ -41,11 +41,11 @@ class NotateBook(UserList):
                 count += 1
                 print(f"{ind}. {record}")
         if count == 0:
-            return 'Nothing found'
+            return 'Notate not found'
         else:
             return 'Search complete'
 
-    def find_tag(self, symbol) -> int:
+    def find_tag(self, symbol) -> str:
         count = 0
         ind = 0
         for rec in self.data:
@@ -59,9 +59,10 @@ class NotateBook(UserList):
                         count +=1
                         print(f"{ind}. {rec}")
             if count == 0:
-                return 'Nothing found'
+                return 'Tag not found'
             else:
                 return 'Search complete'
+
 
 class InputError:
     def __init__(self, func) -> None:
@@ -77,9 +78,6 @@ class InputError:
         except ValueError:
             return 'Sorry,phone number not found,try again!'
 
-def greeting(*args):
-    return 'Hello! Can I help you?'
-
 
 @InputError
 def add(notates_list, *args):
@@ -88,6 +86,7 @@ def add(notates_list, *args):
     writing_db(notates_list)
     return f'Your note is added under number {len(notates_list)}'
 
+
 @InputError
 def del_notate(notates_list, *args):
     numb_notate = args[0]
@@ -95,12 +94,14 @@ def del_notate(notates_list, *args):
     writing_db(notates_list)
     return f'Notate deleted'
 
+
 @InputError
 def del_tag(notates_list, *args):
     numb_notate = args[0]
     notates_list[int(numb_notate)-1].tag.clear()
     writing_db(notates_list)
     return f'Tags deleted'
+
 
 @InputError
 def change_notate(notates_list, *args):
@@ -113,8 +114,6 @@ def change_notate(notates_list, *args):
     return f'Notate changed'
 
 
-
-
 @InputError
 def find_symb(notates_list, *args):
     new_line = ''
@@ -123,6 +122,7 @@ def find_symb(notates_list, *args):
     symbol = new_line.strip()
     return notates_list.find_notate(symbol)
 
+
 @InputError
 def find_tags(notates_list, *args):
     new_line = ''
@@ -130,6 +130,7 @@ def find_tags(notates_list, *args):
         new_line += args[i] + ' '
     symbol = new_line.strip().split(', ')
     return notates_list.find_tag(symbol)
+
 
 @InputError
 def add_tag(notates_list, *args):  # 1 tag1, tag2, tag3
@@ -161,15 +162,18 @@ def show_notates(notates_list, *args):
     else:
         return notates_list
 
-def backing(notates_list, *args):
+
+def backing_notates(notates_list, *args):
     return 'Good bye!'
 
 
 def unknown_command(notates_list, *args):
     return 'Unknown command! Enter again!'
 
+
 def greeting(*args):
     return 'Hello! Can I help you?'
+
 
 def help(*args):
     return """Commands format - Command meaning
@@ -190,11 +194,11 @@ def help(*args):
 
 
 
-file_name = 'Notatebook.bin'
+file_name_notates = 'Notatebook.bin'
 
 
-def reading_db(file_name):
-    with open(file_name, "rb") as fh:
+def reading_db_notate(file_name_notates):
+    with open(file_name_notates, "rb") as fh:
         try:
             unpacked = pickle.load(fh)
         except EOFError:
@@ -203,19 +207,18 @@ def reading_db(file_name):
 
 
 def writing_db(notates_list):
-    with open(file_name, "wb") as fh:
+    with open(file_name_notates, "wb") as fh:
         pickle.dump(notates_list, fh)
 
 
-COMMANDS = {greeting: ['hello'], add: ['add'], backing: ['back'],
+COMMANDS = {greeting: ['hello'], add: ['add'], backing_notates: ['back', 'b'],
             show_notates: ['show'], add_tag: ['tag'], del_notate : ['del notate'],
-            del_tag : ['del tag'], change_notate: ['change'], greeting: ['hello'],
-            find_symb: ['find notate'], clear: ['clear'], find_tags: ['find tag'], help: ['help']}
-
+            del_tag : ['del tag'], change_notate: ['change'],  help: ['help'],
+            find_symb: ['find notate'], clear: ['clear'], find_tags: ['find tag']}
 
 
 def new_func():
-    return (str, list)
+    return str, list
 
 
 def command_parser_not(user_command: str) -> new_func():
