@@ -145,8 +145,6 @@ class Record:
     def add_phone(self, phone: Phone) -> None:
         self.phone_list.append(phone)
 
-    def del_phone(self, phone: Phone) -> None:
-        self.phone_list.remove(phone)
 
     def get_phones(self) -> str:
         if not self.phone_list:
@@ -340,21 +338,6 @@ def change_adres(contacts, *args):
     return f'Address {adres} changed to {new_adres} for {name}'
 
 
-#@InputError
-#def search_data(contacts, *args):
- #   name = args[0]
-  #  output = contacts[name]
-   # return f'{output}'
-
-
-@InputError
-def del_phone(contacts, *args):
-    name, phone = args[0], args[1]
-    contacts[name].del_phone(Phone(phone))
-    writing_db(contacts)
-    return f'for {name},phone:{phone} is delete'
-
-
 def del_contact(contacts, *args):
     name = args[0]
     del contacts[name]
@@ -402,7 +385,6 @@ def help(*args):
     Command: "add" Enter: name phone (birthday) - adds a phone to a contact, adds a birthday (optional)
     Command: "new phone" Enter: name phone new phone - changes a phone number to a new one
     Command: "show all" - displays all contacts
-    Command: "delete" Enter: name phone - deletes a phone number for name
     Command: "birthday" Enter: name - finds a birthday for name
     Command: "soon birthday" Enter: {days} - gives a list of users who have birthday within the next {days}, where days = number of your choosing
     Command: "find" Enter: [any strings} - finds matches in the address book and returns the findings
@@ -454,10 +436,10 @@ def find(contacts, *args):
 
 
 COMMANDS = {greeting: ['hello'], add: ['add '], change_phone: ['new phone'],
-            show_all: ['show all'], backing: ['back'], del_phone: ['delete '],
+            show_all: ['show all'], backing: ['back', 'b'],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
             find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
-            change_email: ["new email"], change_adres: ['new address', 'new adres'],
+            change_email: ["new email"], change_adres: ['new address', 'new adress'],
             del_contact: ['remove contact'], help: ['help']}
 
 
