@@ -390,9 +390,10 @@ def help(*args):
     Command: "find" Enter: [any strings} - finds matches in the address book and returns the findings
     Command: "email" Enter: name email - adds an email for a user
     Command: "new email" Enter: name old email new email - changes old email to new email
-    Command: "new adres" Enter: name old address new address - changes old address to the new address
+    Command: "new adress" Enter: name old address new address - changes old address to the new address
     Command: "adress" Enter: name address - adds and address for a user, address format city,street,number
     Command: "remove contact" Enter:  name - deletes the user and all his data from the contact book
+    Command: "back" - returns to the selection of work branches
     """
 
 

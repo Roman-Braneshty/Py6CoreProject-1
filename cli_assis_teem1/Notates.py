@@ -188,7 +188,7 @@ def help(*args):
     Command: "find tag" Enter: the tag(s) that the note's tags should contain
     Command: "show"  print a book of notes
     Command: "clear"  delete a book of notes
-    Command: "back" return to the previous menu
+    Command: "back" returns to the selection of work branches
     """
 
 
