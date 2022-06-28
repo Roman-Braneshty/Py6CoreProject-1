@@ -1,0 +1,3 @@
+[console_scripts]
+cli_assistant = cli_assis_teem1.main:main
+
