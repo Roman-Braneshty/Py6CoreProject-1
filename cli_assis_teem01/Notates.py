@@ -214,7 +214,7 @@ def writing_db(notates_list):
         pickle.dump(notates_list, fh)
 
 
-COMMANDS = {greeting: ['hello'], add: ['add'], backing_notates: ['back', 'b'],
+COMMANDS = {greeting: ['hello'], add: ['add'], backing_notates: ['back'],
             show_notates: ['show'], add_tag: ['tag'], del_notate : ['del notate'],
             del_tag : ['del tag'], change_notate: ['change'],  help: ['help'],
             find_symb: ['find notate'], clear: ['clear'], find_tags: ['find tag']}
