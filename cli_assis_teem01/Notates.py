@@ -53,7 +53,6 @@ class NotateBook(UserList):
             ind += 1
             n = 0
             for i in range(len(symbol)):
-                print(symbol[i])
                 if symbol[i] in rec.tag:
                     n +=1
                     if n == len(symbol):
