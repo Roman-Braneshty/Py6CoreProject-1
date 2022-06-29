@@ -21,7 +21,7 @@ ___
 
 ### Instructions for install:
 #### Install script on your pc:
-    pip install -i https://test.pypi.org/simple/ cli-assis-teem01
+    pip install -i https://test.pypi.org/simple/ cli-assis-1teem
 #### Command for call:
     cli_assistant
 
