@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name='cli_assis_teem1',
-    version='0.0.1',
+    version='0.1.1',
     description='cli_assistant_project',
     url='https://github.com/Roman-Braneshty/Py6CoreProject-1',
     author='Троє в пітоні',

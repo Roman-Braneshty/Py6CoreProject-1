@@ -3,6 +3,7 @@ from collections import UserDict
 from datetime import datetime
 from datetime import date
 import pickle
+import os.path
 
 
 class Field:
@@ -397,16 +398,18 @@ def help(*args):
     """
 
 
-file_name = 'cli_assis_teem1/AddressBook.bin'
+file_name = 'AddressBook.bin'
 
 
 def reading_db(file_name):
-    with open(file_name, "rb") as fh:
-        try:
+    check_file = os.path.exists('AddressBook.bin')
+    if check_file == True and os.path.getsize('AddressBook.bin') !=0 :
+        with open(file_name, "rb") as fh:
             unpacked = pickle.load(fh)
-        except EOFError:
+    else:
+        with open(file_name, "wb") as fh:
             unpacked = AddressBook()
-        return unpacked
+    return unpacked
 
 
 def writing_db(contacts):

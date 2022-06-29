@@ -1,6 +1,7 @@
 import re
 from collections import UserList
 import pickle
+import os.path
 
 
 class Record:
@@ -194,16 +195,18 @@ def help(*args):
 
 
 
-file_name_notates = 'cli_assis_teem1/Notatebook.bin'
+file_name_notates = 'Notatebook.bin'
 
 
 def reading_db_notate(file_name_notates):
-    with open(file_name_notates, "rb") as fh:
-        try:
+    check_file = os.path.exists('Notatebook.bin')
+    if check_file == True and os.path.getsize('Notatebook.bin') !=0:
+        with open(file_name_notates, "rb") as fh:
             unpacked = pickle.load(fh)
-        except EOFError:
+    else:
+        with open(file_name_notates, "wb") as fh:
             unpacked = NotateBook()
-        return unpacked
+    return unpacked
 
 
 def writing_db(notates_list):

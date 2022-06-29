@@ -3,6 +3,7 @@ from collections import UserDict
 from datetime import datetime
 from datetime import date
 import pickle
+import os.path
 
 
 class Field:
@@ -390,22 +391,25 @@ def help(*args):
     Command: "find" Enter: [any strings} - finds matches in the address book and returns the findings
     Command: "email" Enter: name email - adds an email for a user
     Command: "new email" Enter: name old email new email - changes old email to new email
-    Command: "new adres" Enter: name old address new address - changes old address to the new address
+    Command: "new adress" Enter: name old address new address - changes old address to the new address
     Command: "adress" Enter: name address - adds and address for a user, address format city,street,number
     Command: "remove contact" Enter:  name - deletes the user and all his data from the contact book
+    Command: "back" - returns to the selection of work branches
     """
 
 
-file_name = 'cli_assis_teem1/AddressBook.bin'
+file_name = 'AddressBook.bin'
 
 
 def reading_db(file_name):
-    with open(file_name, "rb") as fh:
-        try:
+    check_file = os.path.exists('AddressBook.bin')
+    if check_file == True and os.path.getsize('AddressBook.bin') !=0 :
+        with open(file_name, "rb") as fh:
             unpacked = pickle.load(fh)
-        except EOFError:
+    else:
+        with open(file_name, "wb") as fh:
             unpacked = AddressBook()
-        return unpacked
+    return unpacked
 
 
 def writing_db(contacts):
