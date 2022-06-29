@@ -59,10 +59,10 @@ class NotateBook(UserList):
                     if n == len(symbol):
                         count +=1
                         print(f"{ind}. {rec}")
-            if count == 0:
-                return 'Tag not found'
-            else:
-                return 'Search complete'
+        if count == 0:
+            return 'Tag not found'
+        else:
+            return 'Search complete'
 
 
 class InputError:
