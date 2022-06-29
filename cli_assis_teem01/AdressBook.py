@@ -440,7 +440,7 @@ def find(contacts, *args):
 
 
 COMMANDS = {greeting: ['hello'], add: ['add '], change_phone: ['new phone'],
-            show_all: ['show all'], backing: ['back', 'b'],
+            show_all: ['show all'], backing: ['back'],
             birthday: ['birthday '], show_birthday_x_days: ['soon birthday'],
             find: ['find', 'check'], add_mail: ['email'], add_adress: ['adress'],
             change_email: ["new email"], change_adres: ['new address', 'new adress'],
