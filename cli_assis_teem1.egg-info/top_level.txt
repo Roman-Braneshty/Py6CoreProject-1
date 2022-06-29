@@ -1,4 +1,0 @@
-build
-cli_assis_teem1
-dist
-venv
